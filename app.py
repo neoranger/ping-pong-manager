@@ -8,7 +8,6 @@ import os
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///torneo.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'torneo.db')
 db = SQLAlchemy(app)
 
@@ -377,7 +376,7 @@ def perfil():
 with app.app_context():
     db.create_all()
     if not Usuario.query.filter_by(username='admin').first():
-        hashed_pw = generate_password_hash('Encr1pt4d0', method='pbkdf2:sha256')
+        hashed_pw = generate_password_hash('admin123', method='pbkdf2:sha256')
         admin = Usuario(username='admin', password=hashed_pw)
         db.session.add(admin)
         db.session.commit()

@@ -41,8 +41,8 @@ docker-compose up -d
 ├── app.py              # Lógica principal y rutas de Flask
 ├── models.py           # Definición de modelos de base de datos
 ├── static/
-│   ├── uploads/        # Avatares subidos por el admin
-│   └── style.css       # Estilos (Modo Oscuro & Responsivo)
+│   └── uploads/
+│       └── avatars/    # Avatares subidos por el admin
 ├── templates/
 │   ├── index.html      # Dashboard principal y llaves
 │   ├── login.html      # Acceso administrativo
@@ -50,6 +50,8 @@ docker-compose up -d
 ├── Dockerfile          # Configuración de la imagen
 └── docker-compose.yml  # Orquestación de contenedores y volúmenes
 ```
+
+### NOTA: Recordá que debes crear el archivo torneo.db y el directorio /static/uploads/avatars de manera local para los permisos necesarios de ejecución
 
 🤝 Contribuir
 ¡Las contribuciones son bienvenidas! Si tienes ideas para nuevas funcionalidades (como integración con Telegram, exportación a Excel o historial de campeones), siéntete libre de:

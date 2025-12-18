@@ -6,4 +6,5 @@ services:
       - "5051:5000"
     volumes:
       - ./torneo.db:/app/torneo.db
+      - ./avatars:/app/static/uploads/avatars
     restart: always

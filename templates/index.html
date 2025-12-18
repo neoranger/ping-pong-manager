@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo de Ping Pong</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; max-width: 800px; margin: auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 70%; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 15px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+        .btn-action { background-color: #27ae60; width: 100%; margin-top: 10px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .badge { padding: 5px 10px; border-radius: 12px; font-size: 0.8em; background: #e0e0e0; }
+        .ganador { color: #27ae60; font-weight: bold; }
+	    .badge {
+	        display: inline-block;
+	        padding: 4px 12px;
+	        border-radius: 50px;
+	        font-size: 12px;
+	        font-weight: 600;
+	        text-transform: uppercase;
+	    }
+        body { background-color: var(--bg-color); color: var(--text-color); transition: 0.3s; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+        input { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); }
+    
+        :root {
+            --bg-color: #f4f4f9;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --border-color: #444;
+        }
+    
+        .champion-alert {
+            margin-top: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f1c40f 0%, #d4ac0d 100%);
+            color: #000;
+            border-radius: 12px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: celebrate 1.5s ease-in-out infinite;
+            border: 2px solid #fff;
+        }
+    
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 10px 25px rgba(241, 196, 15, 0.7); }
+        }
+
+        /* Ajuste para modo oscuro para que no pierda legibilidad */
+        body.dark-mode .champion-alert {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            color: #1a1a1a;
+        }
+        body.dark-mode td {
+            color: #ffffff; /* Esto hará que todos los nombres resalten bien en blanco */
+        }
+        
+        body.dark-mode input[type="text"] {
+        background-color: #3d3d3d;
+        color: #fff;
+        border: 1px solid #555;
+        padding: 5px;
+        border-radius: 4px;
+        }
+        
+        .input-edit {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        padding: 5px;
+        }
+        .input-edit:focus {
+        border-bottom: 1px solid #3498db;
+        outline: none;
+        }
+        .text-danger { color: #e74c3c; font-weight: bold; text-decoration: none; }
+        
+        /* --- DISEÑO RESPONSIVO --- */
+
+        /* Contenedor principal flexible */
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 10px;
+        }
+
+        /* Ajustes para pantallas pequeñas (Celulares) */
+        @media (max-width: 768px) {
+            /* Hacer que las tablas no se desborden */
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            /* Ocultar cabeceras de tabla tradicionales */
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 10px;
+                background: var(--card-bg);
+            }
+
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50% !important;
+                text-align: right !important;
+                margin-bottom: 10px;
+            }
+
+            /* Etiquetas de ayuda para saber qué es cada dato */
+            td:before {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+                content: attr(data-label); /* Necesitaremos agregar este atributo en el HTML */
+            }
+
+            /* Ajustar botones y formularios */
+            form {
+                flex-direction: column;
+            }
+    
+            input, button {
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+
+            .admin-bar {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+        } 
+    
+        @media (max-width: 768px) {
+        /* Fuerza a la tabla a comportarse como bloques */
+            table, tbody, tr, td {
+            display: block;
+            width: 100%;
+            }
+    
+            tr {
+                margin-bottom: 20px;
+                border: 1px solid var(--border-color);
+                border-radius: 10px;
+                background: var(--card-bg);
+                overflow: hidden;
+            }
+
+            td {
+                text-align: right;
+                padding: 12px 15px;
+                border-bottom: 1px solid var(--border-color);
+                position: relative;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            /* Inserta el nombre de la columna usando el atributo data-label */
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                font-weight: bold;
+                color: var(--primary);
+                text-transform: uppercase;
+                font-size: 0.8em;
+            }
+        }
+        
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <script>
+        // Aplicar el tema inmediatamente antes de que se renderice el resto del HTML
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+    <h1>🏓 Ping Pong Manager - gestor de Torneos </h1>
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+        <div>
+            {% if current_user.is_authenticated %}
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar) }}" 
+                        style="width: 35px; height: 35px; border-radius: 50%;">
+                    <span>Hola, <strong>{{ current_user.username }}</strong></span>
+                    <a href="{{ url_for('perfil') }}">⚙️</a>
+                    <a href="{{ url_for('logout') }}" style="color: #e74c3c;">Salir</a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}">🔑 Entrar como Admin</a>
+            {% endif %}
+        </div>
+    </nav>
+
+
+    <div class="card">
+        <h3>Registrar nuevo jugador</h3>
+        <form action="/registrar" method="POST">
+            <input type="text" name="nombre" placeholder="Nombre del jugador" required>
+            <button type="submit">Agregar</button>
+        </form>
+        <p><small>Jugadores inscritos: {{ jugadores|length }}</small></p>
+    </div>
+
+<!--
+    {% if jugadores|length >= 2 %}
+    <a href="/crear_llaves">
+        <button class="btn-action">🏆 Generar/Reiniciar Llaves de Torneo</button>
+    </a>
+    {% endif %}
+-->
+
+    <div class="card">
+        <h3>Enfrentamientos Actuales</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ronda</th>
+                    <th>Modo</th>
+                    <th>Local</th>
+                    <th>Visitante</th>
+                    <th>Resultado / Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in partidos %}
+                <tr>
+                    <td data-label="Ronda"><span class="badge">R{{ p.ronda }}</span></td>
+                    <td data-label="Modo">
+                        {% if p.modo == 'singles' %}
+                            <span class="badge" style="background-color: #d1f2eb; color: #16a085;">👤 Singles</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #ebf5fb; color: #2980b9;">👥 Dobles</span>
+                        {% endif %}
+                    </td>
+                    <td data-label="Local"><strong>{{ nombres[p.id_local] }}</strong></td>
+                    <td data-label="Visitante"><strong>{{ nombres[p.id_visitante] }}</strong></td>
+                    <td data-label="Resultado / Acción">
+                        {% if p.ganador_id %}
+                            <div style="text-align: center;">
+                                <span class="ganador">🏆 {{ nombres[p.ganador_id] }}</span><br>
+                                <small>Sets: {{ p.score_local }} - {{ p.score_visitante }}</small><br>
+                                <small style="font-style: italic;">({{ p.puntos_detalle }})</small>
+                                
+                                {# --- LÓGICA DE CAMPEÓN --- #}
+                                {% set max_ronda = partidos|map(attribute='ronda')|list|max %}
+                                {% set partidos_en_final = partidos|selectattr('ronda', 'equalto', max_ronda)|list|length %}
+
+                                {% if p.ronda == max_ronda and partidos_en_final == 1 and max_ronda > 1 %}
+                                    <div class="champion-alert">
+                                        🥇 ¡TENEMOS {% if p.modo == 'dobles' %}CAMPEONES{% else %}CAMPEÓN{% endif %}! 🥇<br>
+                                        <span style="font-size: 1.2em;">{{ nombres[p.ganador_id] }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            {% if current_user.is_authenticated %}
+                                <form action="{{ url_for('marcar_ganador', partido_id=p.id) }}" method="POST" style="display: flex; flex-direction: column; gap: 5px;">
+                                    <div style="display: flex; gap: 5px; justify-content: center;">
+                                        <input type="number" name="s_local" placeholder="L" style="width: 40px;" required>
+                                        <span>-</span>
+                                        <input type="number" name="s_vis" placeholder="V" style="width: 40px;" required>
+                                    </div>
+                                    <input type="text" name="p_detalle" placeholder="Puntos (11-5...)" style="font-size: 0.7em;">
+                                    <button type="submit" style="background-color: #27ae60; padding: 5px; font-size: 0.8em;">Grabar</button>
+                                </form>
+                            {% else %}
+                                <span style="color: #999; font-size: 0.8em;">Esperando resultado...</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px;">
+        <a href="/avanzar_ronda" style="flex: 1 1 200px;"><button style="width: 100%;">🔥 Siguiente Ronda</button></a>
+        <a href="/posiciones" style="flex: 1 1 200px;"><button style="width: 100%;">📊 Ver Tabla de Posiciones</button></a>
+    </div>
+
+	<div class="card" style="border-left: 5px solid #e74c3c;">
+	    <h3>Configuración del Torneo</h3>
+	    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        
+	        <a href="/crear_llaves/singles" style="flex: 1;">
+	            <button class="btn-action" style="background-color: #27ae60;">👤 Iniciar Singles</button>
+	        </a>
+
+	        <a href="/crear_llaves/dobles" style="flex: 1;">
+	            <button class="btn-action" style="background-color: #2980b9;">👥 Iniciar Dobles</button>
+	        </a>
+
+	        <a href="/reset" style="flex: 1;" onclick="return confirm('¿Estás seguro de que quieres borrar todos los partidos actuales?')">
+	            <button class="btn-action" style="background-color: #e74c3c;">🗑️ Resetear Torneo</button>
+	        </a>
+        
+	    </div>
+	</div>
+
+    <button id="theme-toggle" style="position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 10px; cursor: pointer; border-radius: 50%;">
+        🌓
+    </button>
+
+    <script>
+        const body = document.body;
+        const btn = document.getElementById('theme-toggle');
+
+        // 1. Al cargar la página, revisar si ya existía una preferencia guardada
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+        }
+
+    // 2. Al hacer clic, cambiar el modo y GUARDAR la preferencia
+        btn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+
+<div class="card">
+    <h3>👥 Jugadores Registrados ({{ jugadores|length }})</h3>
+    <p><small>Selecciona quiénes participan hoy para generar el torneo.</small></p>
+    <table>
+        <thead>
+            <tr>
+                <th>¿Juega?</th>
+                <th>Nombre</th>
+                <th>Partidos Totales</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in jugadores %}
+            <tr style="{{ 'opacity: 0.5;' if not item.obj.seleccionado else '' }}">
+                <td>
+                    <a href="{{ url_for('toggle_seleccion', id=item.obj.id) }}" style="text-decoration: none; font-size: 1.5em;">
+                        {{ '✅' if item.obj.seleccionado else '⬜' }}
+                    </a>
+                </td>
+                <td>
+                    <form action="{{ url_for('editar_jugador', id=item.obj.id) }}" method="POST" style="display:inline;">
+                        <input type="text" name="nuevo_nombre" value="{{ item.obj.nombre }}" class="input-edit">
+                    </form>
+                </td>
+                <td><strong>{{ item.total }}</strong></td>
+                <td>
+                    <a href="{{ url_for('eliminar_jugador', id=item.obj.id) }}" class="text-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<a href="{{ url_for('limpiar_seleccion') }}">
+    <button type="button" style="background-color: #95a5a6; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+        🧹 Limpiar Selección
+    </button>
+</a>
+
+</body>
+</html>

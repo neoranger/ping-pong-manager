@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+instance/
+torneo.db
+static/uploads/avatars/*
+!static/uploads/avatars/default_avatar.png
+.env

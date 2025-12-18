@@ -1,0 +1,9 @@
+services:
+  pingpong-app:
+    build: .
+    container_name: pingpong_manager
+    ports:
+      - "5051:5000"
+    volumes:
+      - ./torneo.db:/app/torneo.db
+    restart: always

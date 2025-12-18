@@ -11,10 +11,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'torneo.db')
 db = SQLAlchemy(app)
 
-UPLOAD_FOLDER = 'static/uploads/avatars'
+UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads', 'avatars')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# Asegurar que la carpeta exista
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Asegurar que la carpeta exista y sino la crea
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    print(f"Carpeta creada en: {UPLOAD_FOLDER}")
 
 # Configuración de Login
 app.config['SECRET_KEY'] = 'tu_llave_secreta_super_segura' # Cambia esto

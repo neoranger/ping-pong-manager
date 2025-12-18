@@ -62,3 +62,19 @@ docker-compose up -d
 4. Abrir un **Pull Request**.
 
 ### Desarrollado con ❤️ para la comunidad de software libre y los amantes del Ping Pong.
+
+### Algunas capturas de pantalla de la aplicación
+
+![pingpongmanager1](pingpongmanager1.PNG "pingpongmanager1")
+
+![pingpongmanager2](pingpongmanager2.PNG "pingpongmanager2")
+
+![pingpongmanager3](pingpongmanager3.PNG "pingpongmanager3")
+
+![pingpongmanager4](pingpongmanager4.PNG "pingpongmanager4")
+
+![pingpongmanager5](pingpongmanager5.PNG "pingpongmanager5")
+
+![pingpongmanager6](pingpongmanager6.PNG "pingpongmanager6")
+
+![pingpongmanager7](pingpongmanager7.PNG "pingpongmanager7")
